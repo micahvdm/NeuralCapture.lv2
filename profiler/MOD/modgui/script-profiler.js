@@ -45,6 +45,8 @@ function (event) {
                     event.icon.find ('[mod-role=METER]').css({boxShadow: `5px 5px 15px red`});                    
                 } else if (value > -6) {
                     event.icon.find ('[mod-role=METER]').css({boxShadow: `5px 5px 15px rgba(242, 121, 0, 0.8)`});
+                } else {
+                    event.icon.find ('[mod-role=METER]').css({boxShadow: `5px 5px 15px rgba(35, 145, 0, 0.8)`});
                 }
                 break;
             case 'STATE':
