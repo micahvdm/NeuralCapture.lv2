@@ -1,0 +1,146 @@
+#
+# Copyright (C) 2013 Hermann Meyer
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# --------------------------------------------------------------------------
+#
+
+
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix state:   <http://lv2plug.in/ns/ext/state#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
+@prefix opts:  <http://lv2plug.in/ns/ext/options#> .
+
+<https://github.com/brummer10#me>
+	a foaf:Person ;
+	foaf:name "hermann" ;
+	foaf:mbox <mailto:brummer@web.de> ;
+	rdfs:seeAlso <https://github.com/brummer10> .
+
+<https://github.com/brummer10/profiler>
+    a lv2:Plugin ,
+        lv2:UtilityPlugin ;
+    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:name "Profiler";
+    doap:license <http://opensource.org/licenses/isc> ;
+    lv2:project <https://github.com/brummer10/profiler> ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:optionalFeature <http://kx.studio/ns/lv2ext/control-input-port-change-request>;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPriority>;
+    lv2:extensionData state:interface ;
+
+    lv2:minorVersion 0;
+    lv2:microVersion 1;
+
+rdfs:comment """
+A Profiler plug to make the process of cloning external soft/hardware a bit more comfortable. 
+
+Features a round trip measurement routine. 
+This allows to load the plug, connect the output to the system output, 
+loop over external gear (soft or hardware) and back to the Profiler input.
+
+Simply press "Profile" to play the "input.wav" file to the output and record the returning input 
+delayed by the measured round trip latency. 
+
+The round-trip latency will be measured on each "Profile" start. 
+
+Resulting recorded "target.wav" file will be perfectly in sync with the used "input.wav" file. 
+Currently, both files would be saved under "/data/user-files/Audio Recordings/profiles/". 
+The "target.wav" file will be overwritten on each Profile run, so there will be always only one target file.
+You need to download it from the device in order to use it with the AIDA-X trainer.
+
+The "input.wav" file comes as resource with the plug and get copied over to that folder, 
+when no input.wav file was found there. 
+This allows advanced users to use their own input.wav file by simply replace the one in that folder. 
+
+The target.wav file get checked during record and run to a normalisation function when needed. 
+(Only when the max peek in target is above the max peek in input). 
+
+The record will be saved in the PCM24 wav format (same as the input.wav file).
+
+The UI provide a progress bar, a vu-meter, a clipping indicator and, well the profile button.
+
+Features:
+Developed by Brummer
+
+""";
+
+    lv2:port [
+        a lv2:InputPort ,
+            lv2:ControlPort ;
+        lv2:index 0 ;
+        lv2:symbol "PROFILE" ;
+        lv2:name "PROFILE";
+        lv2:portProperty lv2:toggled;
+        lv2:portProperty lv2:integer;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 1 ;
+        lv2:symbol "CLIP" ;
+        lv2:name "CLIP";
+        lv2:portProperty lv2:toggled;
+        lv2:portProperty lv2:integer;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 2 ;
+        lv2:symbol "METER" ;
+        lv2:name "VUMETER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "STATE" ;
+        lv2:name "STATE" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 4 ;
+        lv2:symbol "ERRORS" ;
+        lv2:name "ERRORS" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
+        a lv2:AudioPort ,
+            lv2:OutputPort ;
+        lv2:index 5 ;
+        lv2:symbol "out" ;
+        lv2:name "Out"
+    ] , [
+        a lv2:AudioPort ,
+            lv2:InputPort ;
+        lv2:index 6 ;
+        lv2:symbol "in" ;
+        lv2:name "In" ;
+    ].
