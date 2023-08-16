@@ -1,7 +1,7 @@
 Profiler
 ===========
 
-![Profiler.lv2](https://github.com/brummer10/Profiler.lv2/raw/master/Profiler.png)
+![Profiler.lv2](https://github.com/brummer10/Profiler.lv2/blob/main/profiler.png?raw=true)
 
 ## 
 
