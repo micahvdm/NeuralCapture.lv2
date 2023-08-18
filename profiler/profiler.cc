@@ -326,7 +326,8 @@ inline std::string Profil::get_ffilename() {
 // check if input.wav is in path, otherwise copy it over and return path + filename
 inline std::string Profil::get_ifilename() {
     struct stat sb;
-    std::string iname = dirname(get_profile_library_path().data());
+    char * path = strdup(get_profile_library_path().data());
+    std::string iname = dirname(path);
     iname += "/resources/input.wav";
     std::string oname = get_path() + "input.wav";
     if (stat (oname.c_str(), &sb) != 0) {
@@ -334,6 +335,7 @@ inline std::string Profil::get_ifilename() {
         std::ofstream dest(oname.c_str(), std::ios::binary);
         dest << src.rdbuf();
     }
+    free(path);
     return oname;
 }
 
