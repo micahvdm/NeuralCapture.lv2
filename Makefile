@@ -6,7 +6,7 @@ NONE = "\033[0m"
 
 SUBDIR := profiler
 
-NOGOAL := mod install all
+NOGOAL := mod modnogui install all
 
 .PHONY: $(SUBDIR) libxputty  recurse
 

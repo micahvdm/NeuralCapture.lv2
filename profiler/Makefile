@@ -75,11 +75,11 @@
 	RED =  "\033[1;31m"
 	NONE = "\033[0m"
 
-.PHONY : mod all clean install uninstall 
+.PHONY : mod modnogui all clean install uninstall 
 
 all : check $(NAME)
 	@mkdir -p ../$(BUNDLE)/resources
-	cp ./*.wav ../$(BUNDLE)/resources
+	@cp ./*.wav ../$(BUNDLE)/resources
 	@cp ./*.ttl ../$(BUNDLE)
 	@mv ./*.so ../$(BUNDLE)
 	@if [ -f ../$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
@@ -87,8 +87,19 @@ all : check $(NAME)
 	@echo $(NONE)
 
 mod : nogui clean
-	@mkdir -p ../$(BUNDLE)
+	@mkdir -p ../$(BUNDLE)/resources
+	@cp ./*.wav ../$(BUNDLE)/resources
 	@cp -R ./MOD/* ../$(BUNDLE)
+	@mv ./$(NAME).so ../$(BUNDLE)
+	@if [ -f ../$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
+	else echo $(RED)"sorry, build failed"; fi
+	@echo $(NONE)
+
+modnogui : nogui clean
+	@mkdir -p ../$(BUNDLE)/resources
+	@cp ./*.wav ../$(BUNDLE)/resources
+	@cp ./MOD/$(NAME).ttl ../$(BUNDLE)
+	@cp ./manifest.ttl ../$(BUNDLE)
 	@mv ./$(NAME).so ../$(BUNDLE)
 	@if [ -f ../$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
 	else echo $(RED)"sorry, build failed"; fi

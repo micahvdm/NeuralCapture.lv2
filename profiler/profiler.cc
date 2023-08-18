@@ -656,7 +656,7 @@ void always_inline Profil::compute(int count, float *input0, float *output0) {
                     nf = fConst2 / fConst1;
                 else
                     nf = 1.0;
-                fprintf(stderr, "finished max %f \n", nf);
+                //fprintf(stderr, "finished max %f \n", nf);
             }
             
         } else if (IOTA) { // when record stoped, flush the rest to stream
