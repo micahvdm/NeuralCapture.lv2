@@ -573,7 +573,7 @@ void always_inline Profil::compute(int count, float *input0, float *output0) {
     if (iSlow0 && !roundtrip) {
         mtdm_process (mtdm, count, input0, output0);
         measure++;
-        if (measure < 20) return;
+        if (measure < 40) return;
     }
     // resolve roundtrip latency after 20 frames
     if (measure && !roundtrip) {
