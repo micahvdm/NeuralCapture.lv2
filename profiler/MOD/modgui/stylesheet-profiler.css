@@ -65,34 +65,19 @@
 
 /* CONTROLS */
 .profiler{{{cns}}} .mod-control-group {
-    color: #fff;
-    font-size: 10px;
-    height: 43px;
-    left: 30px;
+    height: 50px;
+    width: 160px;
+    left: 70px;
     position: absolute;
-    right: 14px;
-    top: 20px;
+    top: 30px;
 }
 
 .profiler{{{cns}}} .mod-control-group > div {
     margin-right: 2px;
 }
 
-/* SWITCH ON/OFF GENERAL */
-.profiler{{{cns}}} .mod-switch {
-    cursor: pointer;
-    float: left;
-    height: 58px;
-    position: relative;
-    margin-top: 10px;
-    margin-left: 40px;
-    width: 135px;
-}
-
 /* Button */
 .profiler{{{cns}}} .mod-control-group .button {
-    margin: 2px;
-    margin-top: 5px;
     height: 50px;
     width: 160px;
     border-radius: 10px;
@@ -112,9 +97,7 @@
     font-family: Helvetica,Arial,Sans-serif;
     font-size: 16px;
     font-weight: bold;
-    position:relative;
-    left: 44px;
-    top: 15px;
+    top: 10px;
     color: rgb(161, 161, 161);
 }
 
@@ -127,6 +110,7 @@
     border-radius: 12px;
     box-shadow: -5px -5px 15px #292929, 5px 5px 15px #444, inset 5px 5px 10px #2b2b2b, inset -5px -5px 10px #292929;
     color: #d6d6d6;
+    text-align: center;
     text-shadow: 0 1px 0 rgba(255, 5, 5, 0.8);
     transition: 500ms;
 }
@@ -137,6 +121,7 @@
     height: 50px;
     width: 160px;
     box-shadow: -5px -5px 15px #444, 5px 5px 15px #222, inset 5px 5px 10px #444, inset -5px -5px 10px #222;
+    text-align: center;
     color: #d6d6d6;
     transition: 500ms;
 }
