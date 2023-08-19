@@ -84,6 +84,7 @@ static void draw_window(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
     widget_set_scale(w);
     cairo_set_source_surface (w->crb, w->image,0,0);
+    //use_bg_color_scheme(w,NORMAL_);
     cairo_paint (w->crb);
     widget_reset_scale(w);
 }
@@ -109,7 +110,7 @@ static void draw_my_button(void *w_, void* user_data) {
         cairo_fill_preserve(w->crb);
         use_bg_color_scheme(w, PRELIGHT_);
     } else if(w->state==1) {
-        use_bg_color_scheme(w, PRELIGHT_);
+        use_shadow_color_scheme(w, PRELIGHT_);
         cairo_fill_preserve(w->crb);
         cairo_set_line_width(w->crb, 1.5);
         use_bg_color_scheme(w, PRELIGHT_);
@@ -217,6 +218,8 @@ static void show_path(void *w_, void* user_data) {
     }
     Path = ui->tolltiptext;
     tooltip_set_text(w, Path);
+    w->state = 1;
+    expose_widget(w);
 }
 
 void dummy1_callback(void *w_, void* _data, void* user_data) {
@@ -287,7 +290,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // connect the enter func
     ui->widget[0]->func.enter_callback = show_path;
     // create a toggle button
-    ui->widget[1] = add_toggle_button(ui->win, "", 302, 18, 25, 20);
+    ui->widget[1] = add_toggle_button(ui->win, "", 15, 18, 25, 20);
     // store the Port Index in the Widget_t data field
     ui->widget[1]->data = CLIP;
     // set adjustment to be of type CL_METER
@@ -301,7 +304,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[1]->parent_struct = ui;
     // create a meter widget
-    ui->widget[2] = add_vmeter(ui->win, "LMeter", true, 300, 39, 10, 205);
+    ui->widget[2] = add_vmeter(ui->win, "Meter", true, 20, 39, 10, 205);
     // store the port index in the Widget_t data field
     ui->widget[2]->data = METER;
     // set resize mode for the toggle button to CENTER ratio

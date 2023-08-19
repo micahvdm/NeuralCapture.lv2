@@ -569,13 +569,13 @@ void always_inline Profil::compute(int count, float *input0, float *output0) {
         *errors = 0.0;
     }
 
-    // measure roundtrip latency, running 20 frames
+    // measure roundtrip latency, running 64 frames
     if (iSlow0 && !roundtrip) {
         mtdm_process (mtdm, count, input0, output0);
         measure++;
-        if (measure < 40) return;
+        if (measure < 64) return;
     }
-    // resolve roundtrip latency after 20 frames
+    // resolve roundtrip latency after 64 frames
     if (measure && !roundtrip) {
         // no signal comes in, stop the process here
         if (mtdm_resolve (mtdm) < 0) {

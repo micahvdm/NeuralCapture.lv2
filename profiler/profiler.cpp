@@ -32,9 +32,9 @@
 
 #include <sndfile.hh>
 
-#include "profiler.h"
-
 ////////////////////////////// LOCAL INCLUDES //////////////////////////
+
+#include "profiler.h"
 
 #include "profiler.cc"
 
