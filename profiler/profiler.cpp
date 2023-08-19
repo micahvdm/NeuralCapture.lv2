@@ -38,6 +38,8 @@
 
 #include "profiler.cc"
 
+static int ONLY_ONE_PROFILER_ALLOWED = 0;
+
 ////////////////////////////// PLUG-IN CLASS ///////////////////////////
 
 class Profiler
@@ -157,6 +159,8 @@ Profiler::instantiate(const LV2_Descriptor* descriptor,
                             double rate, const char* bundle_path,
                             const LV2_Feature* const* features)
 {
+  if(ONLY_ONE_PROFILER_ALLOWED != 0) return NULL;
+  ONLY_ONE_PROFILER_ALLOWED++;
   // init the plug-in class
   Profiler *self = new Profiler();
   if (!self)
