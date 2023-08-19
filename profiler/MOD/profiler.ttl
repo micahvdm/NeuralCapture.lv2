@@ -27,16 +27,13 @@
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 @prefix opts:  <http://lv2plug.in/ns/ext/options#> .
 
-<https://github.com/brummer10#me>
-	a foaf:Person ;
-	foaf:name "hermann" ;
-	foaf:mbox <mailto:brummer@web.de> ;
-	rdfs:seeAlso <https://github.com/brummer10> .
-
 <https://github.com/brummer10/profiler>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
-    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:maintainer [
+       foaf:name "brummer";
+       foaf:homepage <https://github.com/brummer10/Profiler.lv2>;
+    ] ;
     doap:name "Profiler";
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/profiler> ;
