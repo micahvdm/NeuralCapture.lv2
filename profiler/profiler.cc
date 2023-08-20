@@ -490,7 +490,7 @@ SNDFILE *Profil::open_stream(std::string fname) {
 
 // crude normalisation function, barly used
 void Profil::normalize() {
-    if (tape1) { delete tape1; tape1 = 0; }
+    if (tape1) { delete[] tape1; tape1 = 0; }
     int n = load_from_wave(get_ffilename());
     for (int i = 0;i<n;i++) {
         tape1[i] *= nf;
@@ -500,7 +500,7 @@ void Profil::normalize() {
         save_to_wave(sf, tape1, n);
         sf_close(sf);
     }
-    if (tape1) { delete tape1; tape1 = 0; }
+    if (tape1) { delete[] tape1; tape1 = 0; }
     load_from_wave(inputfile);
 }
 
@@ -521,9 +521,9 @@ void Profil::mem_alloc() {
 // free the internal recording and play buffers
 void Profil::mem_free() {
     mem_allocated = false;
-    if (tape1) { delete tape1; tape1 = 0; }
-    if (fRec0) { delete fRec0; fRec0 = 0; }
-    if (fRec1) { delete fRec1; fRec1 = 0; }
+    if (tape1) { delete[] tape1; tape1 = 0; }
+    if (fRec0) { delete[] fRec0; fRec0 = 0; }
+    if (fRec1) { delete[] fRec1; fRec1 = 0; }
 }
 
 // activate the plug
