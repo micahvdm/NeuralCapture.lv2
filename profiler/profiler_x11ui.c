@@ -8,9 +8,6 @@
 
 #include "profiler.h"
 
-// png's linked in as binarys
-EXTLD(profiler_png)
-
 /*---------------------------------------------------------------------
 -----------------------------------------------------------------------    
                 define controller numbers
@@ -82,11 +79,12 @@ static void set_colors(Xputty *app) {
 // draw the window
 static void draw_window(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
-    widget_set_scale(w);
-    cairo_set_source_surface (w->crb, w->image,0,0);
-    //use_bg_color_scheme(w,NORMAL_);
+    set_pattern(w,&w->app->color_scheme->selected,&w->app->color_scheme->normal,BACKGROUND_);
     cairo_paint (w->crb);
-    widget_reset_scale(w);
+    set_pattern(w,&w->app->color_scheme->normal,&w->app->color_scheme->selected,BACKGROUND_);
+    cairo_rectangle (w->crb,4,4,w->width-8,w->height-8);
+    cairo_set_line_width(w->crb,4);
+    cairo_stroke(w->crb);
 }
 
 static void draw_my_button(void *w_, void* user_data) {
@@ -264,21 +262,19 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     }
     // init Xputty
     main_init(&ui->main);
-    set_colors(&ui->main);
+    //set_colors(&ui->main);
     // create the toplevel Window on the parentXwindow provided by the host
     ui->win = create_window(&ui->main, (Window)ui->parentXwindow, 0, 0, 338, 257);
-    // setup a background image to use on the toplevel window
-    widget_get_png(ui->win, LDVAR(profiler_png));
     // connect the expose func
     ui->win->func.expose_callback = draw_window;
     memset(ui->tolltiptext, 0, 250 * (sizeof ui->tolltiptext[0]));
     // create a toggle button
-    ui->widget[0] = add_toggle_button(ui->win, "PROFILE", 60, 55, 220, 30);
+    ui->widget[0] = add_toggle_button(ui->win, "Capture", 60, 55, 220, 30);
     // set resize mode for the toggle button to CENTER ratio
     ui->widget[0]->scale.gravity = CENTER;
     // add tooltip widget to show path were recorded files were saved
     ui->widget[0]->flags |=HAS_TOOLTIP;
-    add_tooltip(ui->widget[0], "Record to: ");
+    add_tooltip(ui->widget[0], "Capture to: ");
     // store the Port Index in the Widget_t data field
     ui->widget[0]->data = PROFILE;
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
@@ -304,7 +300,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[1]->parent_struct = ui;
     // create a meter widget
-    ui->widget[2] = add_vmeter(ui->win, "Meter", true, 20, 39, 10, 205);
+    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 150, 220, 10);
     // store the port index in the Widget_t data field
     ui->widget[2]->data = METER;
     // set resize mode for the toggle button to CENTER ratio

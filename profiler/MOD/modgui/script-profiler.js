@@ -45,7 +45,7 @@ function (event) {
                 break;
             case 'METER':
                 position = log_meter (value);
-                meter.animate({height: position + `%`});
+                meter.css({height: position + `%`});
                 if (value >= 0) {
                     meter.css({boxShadow: `5px 5px 15px red`});                    
                 } else if (value > -6) {
@@ -55,17 +55,17 @@ function (event) {
                 }
                 break;
             case 'STATE':
-                position = (Math.floor(value * 100)).toFixed(1);
+                position = (Math.floor(value * 100)).toFixed();
                 state.css({width: `${position}%`});
                 state.text(`${position}%`);
                 break;
             case 'ERRORS':
                 if (value >= 2.0) {
-                    popup.text(`Profiler Error: Seems we receive only garbage, we stop the profiling process now`);
+                    popup.text(`Neural Capture Error: Seems we receive only garbage, we stop the profiling process now`);
                     popup.css({display: 'block'});
                     setTimeout(function() { popup.css({display: 'none'}); }, 5000); 
                 } else if (value >= 1.0) {
-                    popup.text(`Profiler Error: No signal comes in, we stop the profiling process now`);
+                    popup.text(`Neural Capture Error: No signal comes in, we stop the profiling process now`);
                     popup.css({display: 'block'});
                     setTimeout(function() { popup.css({display: 'none'}); }, 5000); 
                 }

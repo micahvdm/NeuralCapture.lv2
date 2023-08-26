@@ -46,19 +46,12 @@
 	endif
 
 	# set bundle name
-	NAME = profiler
+	NAME = NeuralCapture
 	BUNDLE = $(NAME).lv2
-	BUNDLE_MINI = $(NAME)_mini.lv2
 	VER = 0.2
 
-	RESOURCES_DIR :=./
 	LIB_DIR := ../libxputty/libxputty/
 	HEADER_DIR := $(LIB_DIR)include/
-	RESOURCES := $(wildcard $(RESOURCES_DIR)*.png)
-	RESOURCES_OBJ := $(notdir $(patsubst %.png,%.o,$(RESOURCES)))
-	RESOURCES_LIB := $(notdir $(patsubst %.png,%.a,$(RESOURCES)))
-	RESOURCE_EXTLD := $(notdir $(patsubst %.png,%_png,$(RESOURCES)))
-	RESOURCEHEADER := xresources.h
 
 	# set compile flags
 	CXXFLAGS += -I. -I./dsp  -fPIC -DPIC -O2 -Wall -funroll-loops `pkg-config --cflags sndfile`\
@@ -67,9 +60,8 @@
 	GUI_LDFLAGS += -I. -I$(HEADER_DIR) \
 	-L. $(LIB_DIR)libxputty.a -shared `pkg-config --static --cflags --libs cairo x11` -lm 
 	# invoke build files
-	OBJECTS = $(NAME).cpp 
-	GUI_OBJECTS = $(NAME)_x11ui.c
-	RES_OBJECTS = $(NAME).o
+	OBJECTS = profiler.cpp 
+	GUI_OBJECTS = profiler_x11ui.c
 	## output style (bash colours)
 	BLUE = "\033[1;34m"
 	RED =  "\033[1;31m"
@@ -111,43 +103,10 @@ ifdef ARMCPU
 	@echo $(NONE)
 endif
 
-$(RESOURCEHEADER): $(RESOURCES_OBJ)
-	rm -f $(RESOURCEHEADER)
-	for f in $(RESOURCE_EXTLD); do \
-		echo 'EXTLD('$${f}')' >> $(RESOURCEHEADER) ; \
-	done
-
-ifdef USE_XXD
-$(RESOURCES_OBJ): $(RESOURCES)
-	@#use this line to regenerate the *.c files from used images
-	@cd $(RESOURCES_DIR) && xxd -i $(patsubst %.o,%.png,$@) > $(patsubst %.o,%.c,$@)
-	$(CC) -c $(RESOURCES_DIR)$(patsubst %.o,%.c,$@) -o $@
-	$(AR) rcs $(patsubst %.o,%.a,$@) $@
-else ifdef USE_LDD
-$(RESOURCES_OBJ): $(RESOURCES)
-	cd $(RESOURCES_DIR) && $(LD) -r -b binary -m $(LDEMULATION) -z noexecstack $(patsubst %.o,%.png,$@) -o ../$@
-	$(AR) rcs $(patsubst %.o,%.a,$@) $@
-	LDFLAGS += -DUSE_LD=1
-else
-$(RESOURCES_OBJ): $(RESOURCES)
-	cd $(RESOURCES_DIR) && $(LD) -r -b binary -z noexecstack --strip-all $(patsubst %.o,%.png,$@) -o ../$@
-	$(AR) rcs $(patsubst %.o,%.a,$@) $@
-	LDFLAGS += -DUSE_LD=1
-endif
-
 clean :
-	rm -f *.a *.o *.so xresources.h
+	rm -f *.a *.o *.so
 	@rm -f $(NAME).so
 	@rm -rf ../$(BUNDLE)
-	@rm -rf ../$(BUNDLE_MINI)
-	@rm -rf ./$(RES_OBJECTS)
-	@echo ". ." $(BLUE)", clean up"$(NONE)
-
-dist-clean :
-	@rm -f $(NAME).so
-	@rm -rf ../$(BUNDLE)
-	@rm -rf ../$(BUNDLE_MINI)
-	@rm -rf ./$(RES_OBJECTS)
 	@echo ". ." $(BLUE)", clean up"$(NONE)
 
 install :
@@ -158,17 +117,12 @@ ifneq ("$(wildcard ../$(BUNDLE))","")
 else
 	@echo ". ." $(BLUE)", you must build first"$(NONE)
 endif
-ifneq ("$(wildcard ../$(BUNDLE_MINI))","")
-	@mkdir -p $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE_MINI)
-	cp -r ../$(BUNDLE_MINI)/* $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE_MINI)
-endif
 
 uninstall :
 	@rm -rf $(INSTALL_DIR)/$(BUNDLE)
-	@rm -rf $(INSTALL_DIR)/$(BUNDLE_MINI)
 	@echo ". ." $(BLUE)", done"$(NONE)
 
-$(NAME) : clean $(RES_OBJECTS)
+$(NAME) : clean 
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME).so
 	$(CC) $(CXXFLAGS) -Wl,-z,nodelete $(GUI_OBJECTS) -L. $(RESOURCES_LIB) $(GUI_LDFLAGS) -o $(NAME)_ui.so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME).so

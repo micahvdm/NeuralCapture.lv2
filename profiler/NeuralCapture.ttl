@@ -33,13 +33,13 @@
 	foaf:mbox <mailto:brummer@web.de> ;
 	rdfs:seeAlso <https://github.com/brummer10> .
 
-<https://github.com/brummer10/profiler>
+<https://github.com/brummer10/neuralcapture>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
     doap:maintainer <https://github.com/brummer10#me> ;
-    doap:name "Profiler";
+    doap:name "Neural Capture";
     doap:license <http://opensource.org/licenses/isc> ;
-    lv2:project <https://github.com/brummer10/profiler> ;
+    lv2:project <https://github.com/brummer10/neuralcapture> ;
     lv2:optionalFeature lv2:hardRTCapable ;
     lv2:optionalFeature <http://kx.studio/ns/lv2ext/control-input-port-change-request>;
     opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
@@ -49,7 +49,7 @@
     lv2:minorVersion 0;
     lv2:microVersion 1;
 
-  guiext:ui <https://github.com/brummer10/profiler_ui>;
+  guiext:ui <https://github.com/brummer10/neuralcapture_ui>;
 
 rdfs:comment """
 A Profiler plug to make the process of cloning external soft/hardware a bit more comfortable. 
@@ -150,7 +150,7 @@ Developed by Brummer
         lv2:name "In" ;
     ].
 
-<https://github.com/brummer10/profiler_ui>
+<https://github.com/brummer10/neuralcapture_ui>
   a guiext:X11UI;
   guiext:binary <profiler_ui.so>;
         lv2:extensionData guiext::idle ; 

@@ -27,16 +27,16 @@
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 @prefix opts:  <http://lv2plug.in/ns/ext/options#> .
 
-<https://github.com/brummer10/profiler>
+<https://github.com/brummer10/neuralcapture>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
     doap:maintainer [
        foaf:name "brummer";
        foaf:homepage <https://github.com/brummer10/Profiler.lv2>;
     ] ;
-    doap:name "Profiler";
+    doap:name "Neural Capture";
     doap:license <http://opensource.org/licenses/isc> ;
-    lv2:project <https://github.com/brummer10/profiler> ;
+    lv2:project <https://github.com/brummer10/neuralcapture> ;
     lv2:optionalFeature lv2:hardRTCapable ;
     lv2:optionalFeature <http://kx.studio/ns/lv2ext/control-input-port-change-request>;
     opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
@@ -47,20 +47,20 @@
     lv2:microVersion 1;
 
 rdfs:comment """
-A Profiler plug to make the process of cloning external soft/hardware a bit more comfortable. 
+A Neural Capture plug to make the process of cloning external soft/hardware a bit more comfortable. 
 
 Features a round trip measurement routine. 
 This allows to load the plug, connect the output to the system output, 
 loop over external gear (soft or hardware) and back to the Profiler input.
 
-Simply press "Profile" to play the "input.wav" file to the output and record the returning input 
+Simply press "Capture" to play the "input.wav" file to the output and record the returning input 
 delayed by the measured round trip latency. 
 
-The round-trip latency will be measured on each "Profile" start. 
+The round-trip latency will be measured on each "Capture" start. 
 
 Resulting recorded "target.wav" file will be perfectly in sync with the used "input.wav" file. 
 Currently, both files would be saved under "/data/user-files/Audio Recordings/profiles/". 
-The "target.wav" file will be overwritten on each Profile run, so there will be always only one target file.
+The "target.wav" file will be overwritten on each Capture run, so there will be always only one target file.
 You need to download it from the device in order to use it with the AIDA-X trainer.
 
 The "input.wav" file comes as resource with the plug and get copied over to that folder, 
@@ -84,7 +84,7 @@ Developed by Brummer
             lv2:ControlPort ;
         lv2:index 0 ;
         lv2:symbol "PROFILE" ;
-        lv2:name "PROFILE";
+        lv2:name "Capture";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
         lv2:default 0.0 ;

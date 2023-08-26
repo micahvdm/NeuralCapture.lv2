@@ -1,7 +1,7 @@
 @prefix modgui: <http://moddevices.com/ns/modgui#> .
 @prefix lv2:    <http://lv2plug.in/ns/lv2core#> .
 
-<https://github.com/brummer10/profiler>
+<https://github.com/brummer10/neuralcapture>
     modgui:gui [
         modgui:resourcesDirectory <modgui> ;
         modgui:iconTemplate <modgui/icon-profiler.html> ;
@@ -10,7 +10,7 @@
         modgui:thumbnail <modgui/thumbnail-profiler.png> ;
         modgui:javascript <modgui/script-profiler.js> ;
         modgui:brand "brummer" ;
-        modgui:label "Profiler" ;
+        modgui:label "Neural Capture" ;
         modgui:model "profiler" ;
         modgui:monitoredOutputs [ lv2:symbol "CLIP" ] , [ lv2:symbol "METER" ] , [ lv2:symbol "STATE" ] , [ lv2:symbol "ERRORS" ] ;
         modgui:port [

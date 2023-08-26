@@ -24,8 +24,8 @@
 #include <lv2/lv2plug.in/ns/ext/urid/urid.h>
 #include "control-input-port-change-request.h"
 
-#define SCPLUGIN_URI "https://github.com/brummer10/profiler"
-#define SCPLUGIN_UI_URI "https://github.com/brummer10/profiler_ui"
+#define SCPLUGIN_URI "https://github.com/brummer10/neuralcapture"
+#define SCPLUGIN_UI_URI "https://github.com/brummer10/neuralcapture_ui"
 
 typedef enum
 {
