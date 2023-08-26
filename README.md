@@ -1,25 +1,25 @@
-Profiler
+Neural Capture
 ===========
 
-![Profiler.lv2](https://github.com/brummer10/Profiler.lv2/blob/main/profiler.png?raw=true)
+![NeuralCapture.lv2](https://github.com/brummer10/NeuralCapture.lv2/blob/main/NeuralCapture.png?raw=true)
 
 ## 
 
-A Profiler plug to make the process of cloning external soft/hardware a bit more comfortable. 
+A Neural Capture plug to make the process of cloning external soft/hardware a bit more comfortable. 
 
 Features a round trip measurement routine. 
 This allows to load the plug, connect the output to the system output, 
-loop over external gear (soft or hardware) and back to the Profiler input.
+loop over external gear (soft or hardware) and back to the Capturer input.
 
-Simply press "Profile" to play the "input.wav" file to the output and record the returning input 
+Simply press "Capture" to play the "input.wav" file to the output and record the returning input 
 delayed by the measured round trip latency. 
 
-The round-trip latency will be measured on each "Profile" start. 
+The round-trip latency will be measured on each "Capture" start. 
 
 Resulting recorded "target.wav" file will be perfectly in sync with the used "input.wav" file. 
 Currently, both files would be saved under "$(HOMEy)/profiles/". 
-The "target.wav" file will be overwritten on each Profile run, so there will be always only one target file.
-You need to download it from the device in order to use it with the AIDA-X trainer.
+The "target.wav" file will be overwritten on each Capture run, so there will be always only one target file.
+You need to download it from the device in order to use it with the AIDA-X or NAM trainer.
 
 The "input.wav" file comes as resource with the plug and get copied over to that folder, 
 when no input.wav file was found there. 

@@ -37,45 +37,6 @@ typedef struct {
     LV2UI_Resize* resize;
 } X11_UI;
 
-static void set_colors(Xputty *app) {
-    app->color_scheme->normal = (Colors){
-         /* cairo   / r  /  g  /  b  /  a  /  */
-         /*fg*/    { 0.85, 0.85, 0.85, 1.0},
-         /*bg*/    { 0.3, 0.4, 0.5, 1.0},
-         /*base*/  { 0.05, 0.1, 0.15, 1.0},
-         /*text*/  { 0.9, 0.9, 0.9, 1.0},
-         /*shadow*/{ 0.0, 0.0, 0.0, 0.2},
-         /*frame*/ { 0.0, 0.0, 0.0, 1.0},
-         /*light*/ { 0.1, 0.1, 0.1, 1.0}};
-
-    app->color_scheme->prelight = (Colors){
-        /*fg*/{ 1.0, 1.0, 1.0, 1.0},
-        /*bg*/{ 0.0, 0.0, 0.0, 1.0},
-        /*base*/{ 0.1, 0.1, 0.1, 1.0},
-        /*text*/{ 1.0, 1.0, 1.0, 1.0},
-         /*shadow*/{ 0.0, 0.0, 0.0, 0.2},
-         /*frame*/ { 0.0, 0.0, 0.0, 1.0},
-         /*light*/ { 0.1, 0.1, 0.1, 1.0}};
-
-    app->color_scheme->selected = (Colors){
-        /*fg*/{ 0.9, 0.9, 0.9, 1.0},
-        /*bg*/{ 0.1, 0.2, 0.3, 1.0},
-        /*base*/{ 0.8, 0.18, 0.18, 1.0},
-         /*text*/{ 1.0, 1.0, 1.0, 1.0},
-         /*shadow*/{ 0.0, 0.0, 0.0, 0.2},
-         /*frame*/ { 0.0, 0.0, 0.0, 1.0},
-         /*light*/ { 0.1, 0.1, 0.1, 1.0}};
-
-    app->color_scheme->active = (Colors){
-        /*fg*/{ 1.0, 1.0, 1.0, 1.0},
-        /*bg*/{ 0.5, 0.1, 0.1, 1.0},
-        /*base*/{ 0.68, 0.28, 0.28, 1.0},
-        /*text*/{ 0.75, 0.75, 0.75, 1.0},
-         /*shadow*/{ 0.0, 0.0, 0.0, 0.2},
-         /*frame*/ { 0.0, 0.0, 0.0, 1.0},
-         /*light*/ { 0.1, 0.1, 0.1, 1.0}};
-}
-
 // draw the window
 static void draw_window(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
@@ -184,13 +145,13 @@ void draw_my_hslider(void *w_, void* user_data) {
     cairo_fill(w->crb);
 
     cairo_text_extents_t extents;
-    cairo_set_font_size (w->crb, w->app->small_font/w->scale.ascale);
+    cairo_set_font_size (w->crb, w->app->normal_font/w->scale.ascale);
     char s[64];
     float value = adj_get_value(w->adj);
     snprintf(s, 63,"%d%%",  (int) (value * 100.0));
     cairo_text_extents(w->crb,s , &extents);
     cairo_move_to (w->crb, width/2-extents.width/2,  height - extents.height );
-    use_fg_color_scheme(w, ACTIVE_);
+    use_fg_color_scheme(w, NORMAL_);
     cairo_show_text(w->crb, s);
     cairo_new_path (w->crb);
 
@@ -208,7 +169,7 @@ static void show_path(void *w_, void* user_data) {
     X11_UI* ui = (X11_UI*)w->parent_struct;
     memset(ui->tolltiptext, 0, 250 * (sizeof ui->tolltiptext[0]));
     const char *Path = NULL;
-    strcpy(ui->tolltiptext,"Record to: ");
+    strcpy(ui->tolltiptext,"Capture to: ");
     if ((Path == NULL) || (strcmp(Path,"profile") == 0)) {
         Path = getenv("HOME");
         strncat(ui->tolltiptext, Path, 249 - strlen(ui->tolltiptext));
@@ -264,12 +225,12 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     main_init(&ui->main);
     //set_colors(&ui->main);
     // create the toplevel Window on the parentXwindow provided by the host
-    ui->win = create_window(&ui->main, (Window)ui->parentXwindow, 0, 0, 338, 257);
+    ui->win = create_window(&ui->main, (Window)ui->parentXwindow, 0, 0, 338, 180);
     // connect the expose func
     ui->win->func.expose_callback = draw_window;
     memset(ui->tolltiptext, 0, 250 * (sizeof ui->tolltiptext[0]));
     // create a toggle button
-    ui->widget[0] = add_toggle_button(ui->win, "Capture", 60, 55, 220, 30);
+    ui->widget[0] = add_toggle_button(ui->win, "Capture", 60, 25, 220, 30);
     // set resize mode for the toggle button to CENTER ratio
     ui->widget[0]->scale.gravity = CENTER;
     // add tooltip widget to show path were recorded files were saved
@@ -300,7 +261,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[1]->parent_struct = ui;
     // create a meter widget
-    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 150, 220, 10);
+    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 140, 220, 10);
     // store the port index in the Widget_t data field
     ui->widget[2]->data = METER;
     // set resize mode for the toggle button to CENTER ratio
@@ -310,7 +271,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->main.childlist->childs[a+1]->scale.gravity = CENTER;
 
 
-    ui->widget[3] = add_hslider(ui->win, "STATE", 60, 110, 220, 30);
+    ui->widget[3] = add_hslider(ui->win, "STATE", 60, 80, 220, 30);
     set_adjustment(ui->widget[3]->adj, 0.0, 0.0, 0.0, 1.0, 0.001, CL_CONTINUOS);
     ui->widget[3]->data = STATE;
     // set resize mode for the toggle button to CENTER ratio
