@@ -37,15 +37,56 @@ typedef struct {
     LV2UI_Resize* resize;
 } X11_UI;
 
+static void box_shadow(Widget_t *w) {
+    XWindowAttributes attrs;
+    XGetWindowAttributes(w->app->dpy, (Window)w->widget, &attrs);
+    int width = attrs.width;
+    int height = attrs.height;
+    if (w->state == 3) {
+        cairo_pattern_t *pat = cairo_pattern_create_linear (0, 0, width, 0);
+        cairo_pattern_add_color_stop_rgba (pat, 1,  0.33, 0.33, 0.33, 1.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.95,  0.2, 0.2, 0.2, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.1,  0.1, 0.1, 0.1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0,  0.05, 0.05, 0.05, 1.0);
+        cairo_set_source(w->crb, pat);
+        cairo_paint (w->crb);
+        cairo_pattern_destroy (pat);
+        pat = NULL;
+        pat = cairo_pattern_create_linear (0, 0, 0, height);
+        cairo_pattern_add_color_stop_rgba (pat, 1,  0.33, 0.33, 0.33, 1.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.9,  0.2, 0.2, 0.2, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.1,  0.1, 0.1, 0.1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0,  0.05, 0.05, 0.05, 1.0);
+        cairo_set_source(w->crb, pat);
+        cairo_paint (w->crb);
+        cairo_pattern_destroy (pat);
+    } else {
+        cairo_pattern_t *pat = cairo_pattern_create_linear (0, 0, width, 0);
+        cairo_pattern_add_color_stop_rgba (pat, 0,  0.33, 0.33, 0.33, 1.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.1,  0.2, 0.2, 0.2, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.9,  0.1, 0.1, 0.1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 1,  0.05, 0.05, 0.05, 1.0);
+        cairo_set_source(w->crb, pat);
+        cairo_paint (w->crb);
+        cairo_pattern_destroy (pat);
+        pat = NULL;
+        pat = cairo_pattern_create_linear (0, 0, 0, height);
+        cairo_pattern_add_color_stop_rgba (pat, 0,  0.33, 0.33, 0.33, 1.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.1,  0.2, 0.2, 0.2, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.9,  0.1, 0.1, 0.1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 1,  0.05, 0.05, 0.05, 1.0);
+        cairo_set_source(w->crb, pat);
+        cairo_paint (w->crb);
+        cairo_pattern_destroy (pat);
+    }
+}
+
 // draw the window
 static void draw_window(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
     set_pattern(w,&w->app->color_scheme->selected,&w->app->color_scheme->normal,BACKGROUND_);
     cairo_paint (w->crb);
-    set_pattern(w,&w->app->color_scheme->normal,&w->app->color_scheme->selected,BACKGROUND_);
-    cairo_rectangle (w->crb,4,4,w->width-8,w->height-8);
-    cairo_set_line_width(w->crb,4);
-    cairo_stroke(w->crb);
+    box_shadow(w);
 }
 
 static void draw_my_button(void *w_, void* user_data) {
@@ -113,6 +154,7 @@ static void draw_my_button(void *w_, void* user_data) {
         use_fg_color_scheme(w, ACTIVE_);
         offset = 1.0;
     }
+    box_shadow(w);
 
     use_text_color_scheme(w, get_color_state(w));
     cairo_set_font_size (w->crb, height/2.2);
@@ -150,7 +192,7 @@ void draw_my_hslider(void *w_, void* user_data) {
     float value = adj_get_value(w->adj);
     snprintf(s, 63,"%d%%",  (int) (value * 100.0));
     cairo_text_extents(w->crb,s , &extents);
-    cairo_move_to (w->crb, width/2-extents.width/2,  height - extents.height );
+    cairo_move_to (w->crb, width/2-extents.width/2,  height/2 + extents.height/2 );
     use_fg_color_scheme(w, NORMAL_);
     cairo_show_text(w->crb, s);
     cairo_new_path (w->crb);
@@ -261,7 +303,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[1]->parent_struct = ui;
     // create a meter widget
-    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 140, 220, 10);
+    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 135, 220, 10);
     // store the port index in the Widget_t data field
     ui->widget[2]->data = METER;
     // set resize mode for the toggle button to CENTER ratio
