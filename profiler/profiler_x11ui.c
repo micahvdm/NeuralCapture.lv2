@@ -42,7 +42,7 @@ static void box_shadow(Widget_t *w) {
     XGetWindowAttributes(w->app->dpy, (Window)w->widget, &attrs);
     int width = attrs.width;
     int height = attrs.height;
-    if (w->state == 3) {
+    if (adj_get_value(w->adj)) {
         cairo_pattern_t *pat = cairo_pattern_create_linear (0, 0, width, 0);
         cairo_pattern_add_color_stop_rgba (pat, 1,  0.33, 0.33, 0.33, 1.0);
         cairo_pattern_add_color_stop_rgba (pat, 0.95,  0.2, 0.2, 0.2, 0.0);
@@ -63,8 +63,8 @@ static void box_shadow(Widget_t *w) {
     } else {
         cairo_pattern_t *pat = cairo_pattern_create_linear (0, 0, width, 0);
         cairo_pattern_add_color_stop_rgba (pat, 0,  0.33, 0.33, 0.33, 1.0);
-        cairo_pattern_add_color_stop_rgba (pat, 0.1,  0.2, 0.2, 0.2, 0.0);
-        cairo_pattern_add_color_stop_rgba (pat, 0.9,  0.1, 0.1, 0.1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.05,  0.2, 0.2, 0.2, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 0.95,  0.1, 0.1, 0.1, 0.0);
         cairo_pattern_add_color_stop_rgba (pat, 1,  0.05, 0.05, 0.05, 1.0);
         cairo_set_source(w->crb, pat);
         cairo_paint (w->crb);
@@ -85,6 +85,7 @@ static void box_shadow(Widget_t *w) {
 static void draw_window(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
     set_pattern(w,&w->app->color_scheme->selected,&w->app->color_scheme->normal,BACKGROUND_);
+    //use_bg_color_scheme(w, NORMAL_);
     cairo_paint (w->crb);
     box_shadow(w);
 }
@@ -303,7 +304,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[1]->parent_struct = ui;
     // create a meter widget
-    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 135, 220, 10);
+    ui->widget[2] = add_hmeter(ui->win, "Meter", true, 60, 125, 220, 10);
     // store the port index in the Widget_t data field
     ui->widget[2]->data = METER;
     // set resize mode for the toggle button to CENTER ratio
@@ -313,7 +314,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->main.childlist->childs[a+1]->scale.gravity = CENTER;
 
 
-    ui->widget[3] = add_hslider(ui->win, "STATE", 60, 80, 220, 30);
+    ui->widget[3] = add_hslider(ui->win, "STATE", 60, 80, 220, 20);
     set_adjustment(ui->widget[3]->adj, 0.0, 0.0, 0.0, 1.0, 0.001, CL_CONTINUOS);
     ui->widget[3]->data = STATE;
     // set resize mode for the toggle button to CENTER ratio
