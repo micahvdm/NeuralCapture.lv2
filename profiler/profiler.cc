@@ -306,10 +306,10 @@ inline std::string Profil::get_path() {
 
 #ifndef  __MOD_DEVICES__
     pPath = getenv("HOME");
-    pPath +="/profiles/";
+    pPath +="/Captures/";
 
 #else
-    pPath = "/data/user-files/Audio Recordings/profiles/";
+    pPath = "/data/user-files/Captures/";
 #endif
     if (!(stat(pPath.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))) {
         mkdir(pPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
