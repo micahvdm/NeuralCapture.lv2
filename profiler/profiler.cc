@@ -306,7 +306,7 @@ inline std::string Profil::get_path() {
 
 #ifndef  __MOD_DEVICES__
     pPath = getenv("HOME");
-    pPath +="/Captures/";
+    pPath +="/data/user-files/Captures/";
 
 #else
     pPath = "/data/user-files/Captures/";
