@@ -61,11 +61,11 @@ function (event) {
                 break;
             case 'ERRORS':
                 if (value >= 2.0) {
-                    popup.text(`Neural Capture Error: Seems we receive only garbage, we stop the profiling process now`);
+                    popup.text(`Neural Record Error: Seems we receive only garbage, we stop the profiling process now`);
                     popup.css({display: 'block'});
                     setTimeout(function() { popup.css({display: 'none'}); }, 5000); 
                 } else if (value >= 1.0) {
-                    popup.text(`Neural Capture Error: No signal comes in, we stop the profiling process now`);
+                    popup.text(`Neural Record Error: No signal comes in, we stop the profiling process now`);
                     popup.css({display: 'block'});
                     setTimeout(function() { popup.css({display: 'none'}); }, 5000); 
                 }

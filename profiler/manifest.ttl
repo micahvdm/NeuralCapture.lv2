@@ -20,7 +20,7 @@
 @prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<https://github.com/brummer10/neuralcapture>
+<https://github.com/brummer10/neuralrecord>
     a lv2:Plugin ;
-    lv2:binary <NeuralCapture.so>  ;
-    rdfs:seeAlso <NeuralCapture.ttl> .
+    lv2:binary <NeuralRecord.so>  ;
+    rdfs:seeAlso <NeuralRecord.ttl> .

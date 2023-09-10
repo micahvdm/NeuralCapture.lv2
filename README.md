@@ -1,24 +1,24 @@
-Neural Capture
+Neural Record
 ===========
 
-![NeuralCapture.lv2](https://github.com/brummer10/NeuralCapture.lv2/blob/main/NeuralCapture.png?raw=true)
+![NeuralRecord.lv2](https://github.com/brummer10/NeuralRecord.lv2/blob/main/NeuralRecord.png?raw=true)
 
 ## 
 
-A Neural Capture plug to make the process of cloning external soft/hardware a bit more comfortable. 
+A Neural Record plug to make the process of cloning external soft/hardware a bit more comfortable. 
 
 Features a round trip measurement routine. 
 This allows to load the plug, connect the output to the system output, 
-loop over external gear (soft or hardware) and back to the Capturer input.
+loop over external gear (soft or hardware) and back to the Recordr input.
 
-Simply press "Capture" to play the "input.wav" file to the output and record the returning input 
+Simply press "Record" to play the "input.wav" file to the output and record the returning input 
 delayed by the measured round trip latency. 
 
-The round-trip latency will be measured on each "Capture" start. 
+The round-trip latency will be measured on each "Record" start. 
 
 Resulting recorded "target.wav" file will be perfectly in sync with the used "input.wav" file. 
 Currently, both files would be saved under "$(HOMEy)/profiles/". 
-The "target.wav" file will be overwritten on each Capture run, so there will be always only one target file.
+The "target.wav" file will be overwritten on each Record run, so there will be always only one target file.
 You need to download it from the device in order to use it with the AIDA-X or NAM trainer.
 
 The "input.wav" file comes as resource with the plug and get copied over to that folder, 

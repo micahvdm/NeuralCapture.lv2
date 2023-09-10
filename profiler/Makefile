@@ -46,7 +46,7 @@
 	endif
 
 	# set bundle name
-	NAME = NeuralCapture
+	NAME = NeuralRecord
 	BUNDLE = $(NAME).lv2
 	VER = 0.2
 

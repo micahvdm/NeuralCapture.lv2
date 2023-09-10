@@ -27,16 +27,19 @@
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 @prefix opts:  <http://lv2plug.in/ns/ext/options#> .
 
-<https://github.com/brummer10/neuralcapture>
+<https://github.com/brummer10#me>
+	a foaf:Person ;
+	foaf:name "hermann" ;
+	foaf:mbox <mailto:brummer@web.de> ;
+	rdfs:seeAlso <https://github.com/brummer10> .
+
+<https://github.com/brummer10/neuralrecord>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
-    doap:maintainer [
-       foaf:name "brummer";
-       foaf:homepage <https://github.com/brummer10/Profiler.lv2>;
-    ] ;
-    doap:name "Neural Capture";
+    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:name "Neural Record";
     doap:license <http://opensource.org/licenses/isc> ;
-    lv2:project <https://github.com/brummer10/neuralcapture> ;
+    lv2:project <https://github.com/brummer10/neuralrecord> ;
     lv2:optionalFeature lv2:hardRTCapable ;
     lv2:optionalFeature <http://kx.studio/ns/lv2ext/control-input-port-change-request>;
     opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
@@ -46,21 +49,23 @@
     lv2:minorVersion 0;
     lv2:microVersion 1;
 
+  guiext:ui <https://github.com/brummer10/neuralrecord_ui>;
+
 rdfs:comment """
-A Neural Capture plug to make the process of cloning external soft/hardware a bit more comfortable. 
+A Profiler plug to make the process of cloning external soft/hardware a bit more comfortable. 
 
 Features a round trip measurement routine. 
 This allows to load the plug, connect the output to the system output, 
 loop over external gear (soft or hardware) and back to the Profiler input.
 
-Simply press "Capture" to play the "input.wav" file to the output and record the returning input 
+Simply press "Profile" to play the "input.wav" file to the output and record the returning input 
 delayed by the measured round trip latency. 
 
-The round-trip latency will be measured on each "Capture" start. 
+The round-trip latency will be measured on each "Profile" start. 
 
 Resulting recorded "target.wav" file will be perfectly in sync with the used "input.wav" file. 
 Currently, both files would be saved under "/data/user-files/Audio Recordings/profiles/". 
-The "target.wav" file will be overwritten on each Capture run, so there will be always only one target file.
+The "target.wav" file will be overwritten on each Profile run, so there will be always only one target file.
 You need to download it from the device in order to use it with the AIDA-X trainer.
 
 The "input.wav" file comes as resource with the plug and get copied over to that folder, 
@@ -84,12 +89,15 @@ Developed by Brummer
             lv2:ControlPort ;
         lv2:index 0 ;
         lv2:symbol "PROFILE" ;
-        lv2:name "Capture";
+        lv2:name "PROFILE";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
         lv2:default 0.0 ;
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
+        rdfs:comment "recorded files goes to ~/home/lv2record/" ,
+        "Aufnahmen gehen nach ~/home/lv2record/ "@de ,
+        "Les fichiers sont enregistrés dans ~/home/lv2record/ "@fr;
     ] , [
         a lv2:OutputPort ,
             lv2:ControlPort ;
@@ -141,3 +149,10 @@ Developed by Brummer
         lv2:symbol "in" ;
         lv2:name "In" ;
     ].
+
+<https://github.com/brummer10/neuralrecord_ui>
+  a guiext:X11UI;
+  guiext:binary <NeuralRecord_ui.so>;
+        lv2:extensionData guiext::idle ; 
+        lv2:requiredFeature guiext:makeResident;
+  .
